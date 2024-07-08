@@ -6,10 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +23,7 @@ public class Users implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
+    private String Email;
     private String password;
     private String fullName;
     @ManyToMany
@@ -27,8 +31,15 @@ public class Users implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (roleList == null || roleList.isEmpty()){
+            return Collections.emptyList();
+        }
+        return roleList.stream().flatMap(role ->
+                role.getPermissionList().stream().map(permission ->
+                        new SimpleGrantedAuthority("ROLE_"+permission.getPermissionName())
+                )).collect(Collectors.toList());
     }
+
 
     @Override
     public String getUsername() {
