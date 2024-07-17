@@ -9,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserRequestDTO {
     private String userName;
+    private String email;
     private String password;
     private String fullName;
     private List<Long> roleId;

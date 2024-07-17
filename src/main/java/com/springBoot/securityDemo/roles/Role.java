@@ -18,7 +18,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roleName;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Permission> permissionList;
 
     @Override

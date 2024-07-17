@@ -5,6 +5,7 @@ import com.springBoot.securityDemo.roles.RoleRepository;
 import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class UserService {
     private ModelMapper modelMapper;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public Users addUser(UserRequestDTO user) {
@@ -25,7 +28,8 @@ public class UserService {
 //        Users map = modelMapper.map(user, Users.class);
         Users map=new Users();
         map.setUserName(user.getUserName());
-        map.setPassword(user.getPassword());
+        map.setEmail(user.getEmail());
+        map.setPassword(passwordEncoder.encode(user.getPassword()));
         map.setFullName(user.getFullName());
         List<Role> roles = user.getRoleId().stream()
                 .map(roleId -> roleRepository.findById(roleId).orElseThrow(() -> new IllegalArgumentException("Role not found for id: " + roleId)))

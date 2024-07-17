@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,16 +18,19 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 public class Users implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
-    private String Email;
+    private String email;
     private String password;
     private String fullName;
-    @ManyToMany
+    private boolean Activate=true;
+    @ManyToMany(fetch = FetchType.EAGER)
+
     private List<Role> roleList;
 
     @Override
@@ -43,13 +47,12 @@ public class Users implements UserDetails{
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
     @Override
     public String getPassword() {
         return password;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

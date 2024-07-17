@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoleController {
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private RoleService roleService;
     @PostMapping("/add")
-    public Role addRole(@RequestBody Role role){
-        Role savedRole = roleRepository.save(role);
-        return savedRole;
+    public Role addRole(@RequestBody RoleRequestDTO requestDTO){
+        Role role = roleService.addRole(requestDTO);
+        return role;
     }
 }

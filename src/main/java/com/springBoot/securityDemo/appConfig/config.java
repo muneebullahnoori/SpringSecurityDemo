@@ -1,4 +1,4 @@
-package com.springBoot.securityDemo.AppConfig;
+package com.springBoot.securityDemo.appConfig;
 
 import com.springBoot.securityDemo.user.UserRepository;
 import org.modelmapper.ModelMapper;
